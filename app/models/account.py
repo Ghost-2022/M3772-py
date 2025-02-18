@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.common.bcrypt import bcrypt
 from app.common.db import db
@@ -15,6 +15,7 @@ class User(db.Model, ModelMixin):
     active: Mapped[int] = mapped_column(db.Boolean(), default=True)
     avatar: Mapped[str] = mapped_column(db.String(255), nullable=False, comment='头像')
     is_admin: Mapped[int] = mapped_column(db.Boolean(), default=False)
+    identification_records =  relationship("IdentificationRecords", back_populates="user")
 
     @staticmethod
     def encrypt_pwd(pwd: str) -> str:

@@ -25,7 +25,7 @@ class CNNModel(torch.nn.Module):
 # 设置设备
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# 定义与训练时相同的转换操作
+# 定义与训练时相同地转换操作
 transform = transforms.Compose([
     transforms.Resize((48, 48)),
     transforms.Grayscale(),
