@@ -1,5 +1,6 @@
 from PIL import Image
 from flask import request, g
+from sqlalchemy import func
 
 from app.api.view_base import ViewBase
 from app.common.cnn_model import device, model
@@ -25,3 +26,12 @@ class IdentificationView(ViewBase):
         except Exception as e:
             db.session.rollback()
             raise Error(DatabaseMsg.error('系统繁忙'))
+
+# summary
+class IdentificationSummaryView(ViewBase):
+    @check_login_perm()
+    def get(self):
+        records = db.session.execute(
+            db.select(IdentificationRecords.result, func.count(IdentificationRecords.id).label('cnt')
+                      ).filter_by(user_id=g.user.id).group_by(IdentificationRecords.result)).scalar_one_or_none()
+        print(records)
